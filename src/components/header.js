@@ -1,42 +1,29 @@
 import * as React from "react"
-import PropTypes from "prop-types"
 import { Link } from "gatsby"
+import { StaticImage } from "gatsby-plugin-image"
 
-const Header = ({ siteTitle }) => (
-  <header
-    style={{
-      background: `rebeccapurple`,
-      marginBottom: `1.45rem`,
-    }}
-  >
-    <div
-      style={{
-        margin: `0 auto`,
-        maxWidth: 960,
-        padding: `1.45rem 1.0875rem`,
-      }}
+const Header = () => (
+  <header className="bg-stone-50">
+    <nav
+      className="relative max-w-7xl mx-auto flex items-center justify-between pt-6 px-6 xl:px-8"
+      aria-label="Global"
     >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
-    </div>
+      <div className="flex items-center flex-1">
+        <div className="flex items-center justify-between w-full lg:w-auto">
+          <Link to="/">
+            <StaticImage
+              src="../images/Breanlawlogo.png"
+              width={180}
+              quality={95}
+              formats={["auto", "webp", "avif"]}
+              alt="Breanlaw Trademark Law Firm logo"
+              style={{ marginBottom: `1.45rem` }}
+            />
+          </Link>
+        </div>
+      </div>
+    </nav>
   </header>
 )
-
-Header.propTypes = {
-  siteTitle: PropTypes.string,
-}
-
-Header.defaultProps = {
-  siteTitle: ``,
-}
 
 export default Header
