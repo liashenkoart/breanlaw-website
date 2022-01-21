@@ -10,6 +10,14 @@ const Homepage = () => {
     setSuccess(true)
   }
 
+  const [FName, setFName] = useState('')
+  const [LName, setLName] = useState('')
+  const [Email, setEmail] = useState('')
+  const [Phone, setPhone] = useState('')
+  const [Subject, setSubject] = useState('')
+  const [Message, setMessage] = useState('')
+
+
   const headings = [
     {
       h1_heading: "Get in touch",
@@ -137,13 +145,14 @@ const Homepage = () => {
                 </div>
 
                 <div className="py-10 px-6 sm:px-10 lg:col-span-2 xl:p-12 shadow-md">
-                  <h3 className="text-lg font-medium text-warm-gray-900">
+                  <h3 className="text-lg text-warm-gray-900 font-medium">
                     Send us a message
                   </h3>
                   <form
                     action="#"
                     onSubmit={success_message}
-                    method="POST"
+                    method="get"
+                    enctype="text/plain"
                     className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
                   >
                     <div>
@@ -161,6 +170,8 @@ const Homepage = () => {
                           autoComplete="given-name"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
+                          value={FName}
+                          onChange={(e) => setFName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -179,6 +190,8 @@ const Homepage = () => {
                           autoComplete="family-name"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
+                          value={LName}
+                          onChange={(e) => setLName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -197,6 +210,8 @@ const Homepage = () => {
                           autoComplete="email"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
+                          value={Email}
+                          onChange={(e) => setEmail(e.target.value)}
                         />
                       </div>
                     </div>
@@ -223,6 +238,8 @@ const Homepage = () => {
                           autoComplete="tel"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           aria-describedby="phone-optional"
+                          value={Phone}
+                          onChange={(e) => setPhone(e.target.value)}
                         />
                       </div>
                     </div>
@@ -240,6 +257,8 @@ const Homepage = () => {
                           id="subject"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
+                          value={Subject}
+                          onChange={(e) => setSubject(e.target.value)}
                         />
                       </div>
                     </div>
@@ -268,12 +287,15 @@ const Homepage = () => {
                           defaultValue={""}
                           maxlength="500"
                           required
+                          value={Message}
+                          onChange={(e) => setMessage(e.target.value)}
                         />
                       </div>
                     </div>
                     <div className="sm:col-span-2 sm:flex sm:justify-end">
                       <button
                         type="submit"
+                        value="Send"
                         className="mt-2 w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium font-sans text-white bg-lime-500 hover:bg-lime-600 focus:outline-none sm:w-auto"
                       >
                         Submit
@@ -281,10 +303,10 @@ const Homepage = () => {
                     </div>
                     {success
                       ? headings.map(item => (
-                          <p className="md:w-[30rem] sm:w-[25rem] w-[70vw] m-auto bg-lime-500 text-center sm:text-left  p-3 rounded-md text-sm font-bold tracking-tight text-white font-sans sm:text-base">
-                            {item.success_message}
-                          </p>
-                        ))
+                        <p className="md:w-[30rem] sm:w-[25rem] w-[70vw] m-auto bg-lime-500 text-center sm:text-left  p-3 rounded-md text-sm font-bold tracking-tight text-white font-sans sm:text-base">
+                          {item.success_message}
+                        </p>
+                      ))
                       : ""}
                   </form>
                 </div>
