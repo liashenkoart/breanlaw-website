@@ -5,18 +5,54 @@ import Seo from "../components/seo"
 const Homepage = () => {
   const [success, setSuccess] = useState(false)
 
-  const success_message = event => {
-    event.preventDefault()
-    setSuccess(true)
+  const [mailerState, setMailerState] = useState({
+    FName: "",
+    LName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  })
+
+  function handleStateChange(e) {
+    setMailerState(prevState => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }))
   }
 
-  const [FName, setFName] = useState('')
-  const [LName, setLName] = useState('')
-  const [Email, setEmail] = useState('')
-  const [Phone, setPhone] = useState('')
-  const [Subject, setSubject] = useState('')
-  const [Message, setMessage] = useState('')
-
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    console.log({ mailerState });
+    const response = await window
+      .fetch(`/api/form`, {
+        method: `POST`,
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ mailerState }),
+      })
+      .then((res) => res.json())
+      .then(async (res) => {
+        const resData = await res;
+        console.log(resData);
+        if (resData.status === "success") {
+          setSuccess(true)
+        } else if (resData.status === "fail") {
+          alert("Message failed to send");
+        }
+      })
+      .then(() => {
+        setMailerState({
+          FName: "",
+          LName: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+      });
+  };
 
   const headings = [
     {
@@ -149,10 +185,9 @@ const Homepage = () => {
                     Send us a message
                   </h3>
                   <form
-                    action="#"
-                    onSubmit={success_message}
-                    method="get"
-                    enctype="text/plain"
+                    onSubmit={onSubmit}
+                    method="POST"
+                    action="/api/form"
                     className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
                   >
                     <div>
@@ -165,13 +200,12 @@ const Homepage = () => {
                       <div className="mt-1">
                         <input
                           type="text"
-                          name="first-name"
-                          id="first-name"
+                          onChange={handleStateChange}
+                          name="FName"
+                          value={mailerState.FName}
                           autoComplete="given-name"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
-                          value={FName}
-                          onChange={(e) => setFName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -185,13 +219,12 @@ const Homepage = () => {
                       <div className="mt-1">
                         <input
                           type="text"
-                          name="last-name"
-                          id="last-name"
+                          onChange={handleStateChange}
+                          name="LName"
+                          value={mailerState.LName}
                           autoComplete="family-name"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
-                          value={LName}
-                          onChange={(e) => setLName(e.target.value)}
                         />
                       </div>
                     </div>
@@ -204,14 +237,13 @@ const Homepage = () => {
                       </label>
                       <div className="mt-1">
                         <input
-                          id="email"
+                          onChange={handleStateChange}
                           name="email"
+                          value={mailerState.email}
                           type="email"
                           autoComplete="email"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
-                          value={Email}
-                          onChange={(e) => setEmail(e.target.value)}
                         />
                       </div>
                     </div>
@@ -232,14 +264,13 @@ const Homepage = () => {
                       </div>
                       <div className="mt-1">
                         <input
-                          type="text"
+                          onChange={handleStateChange}
                           name="phone"
-                          id="phone"
-                          autoComplete="tel"
+                          value={mailerState.phone}
+                          type="tel"
+                          autoComplete="phone"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
-                          aria-describedby="phone-optional"
-                          value={Phone}
-                          onChange={(e) => setPhone(e.target.value)}
+                          required
                         />
                       </div>
                     </div>
@@ -253,12 +284,11 @@ const Homepage = () => {
                       <div className="mt-1">
                         <input
                           type="text"
+                          onChange={handleStateChange}
                           name="subject"
-                          id="subject"
+                          value={mailerState.subject}
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
                           required
-                          value={Subject}
-                          onChange={(e) => setSubject(e.target.value)}
                         />
                       </div>
                     </div>
@@ -279,16 +309,15 @@ const Homepage = () => {
                       </div>
                       <div className="mt-1">
                         <textarea
-                          id="message"
+                          onChange={handleStateChange}
                           name="message"
+                          value={mailerState.message}
                           rows={4}
                           className="py-3 px-4 block w-full shadow text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border border-warm-gray-300 rounded-md"
                           aria-describedby="message-max"
                           defaultValue={""}
                           maxlength="500"
                           required
-                          value={Message}
-                          onChange={(e) => setMessage(e.target.value)}
                         />
                       </div>
                     </div>
