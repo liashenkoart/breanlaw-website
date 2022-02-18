@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import $ from 'jquery';
 
 const Homepage = () => {
   const [success, setSuccess] = useState(false)
@@ -21,39 +22,6 @@ const Homepage = () => {
     }))
   }
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    console.log({ mailerState });
-    const response = await window
-      .fetch(`/api/form`, {
-        method: `POST`,
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ mailerState }),
-      })
-      .then((res) => res.json())
-      .then(async (res) => {
-        const resData = await res;
-        console.log(resData);
-        if (resData.status === "success") {
-          setSuccess(true)
-        } else if (resData.status === "fail") {
-          alert("Message failed to send");
-        }
-      })
-      .then(() => {
-        setMailerState({
-          FName: "",
-          LName: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-        });
-      });
-  };
-
   const headings = [
     {
       h1_heading: "Get in touch",
@@ -66,6 +34,18 @@ const Homepage = () => {
         "Your message has been received and we will be in touch shortly.",
     },
   ]
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    $.ajax({
+      url: "https://hooks.zapier.com/hooks/catch/137948/brrfyst/",
+      type: "post",
+      data: $("#contactForm").serialize(),
+      success: function () {
+        setSuccess(true)
+      }
+    });
+  };
 
   return (
     <Layout>
@@ -185,9 +165,8 @@ const Homepage = () => {
                     Send us a message
                   </h3>
                   <form
-                    onSubmit={onSubmit}
-                    method="POST"
-                    action="/api/form"
+                    id="contactForm"
+                    onSubmit={submitHandler}
                     className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
                   >
                     <div>
@@ -270,7 +249,6 @@ const Homepage = () => {
                           type="tel"
                           autoComplete="phone"
                           className="py-3 px-4 block w-full shadow-sm text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border-warm-gray-300 rounded-md"
-                          required
                         />
                       </div>
                     </div>
@@ -315,8 +293,8 @@ const Homepage = () => {
                           rows={4}
                           className="py-3 px-4 block w-full shadow text-warm-gray-900 font-sans border-2 focus:ring-teal-500 focus:border-teal-500 border border-warm-gray-300 rounded-md"
                           aria-describedby="message-max"
-                          defaultValue={""}
-                          maxlength="500"
+
+                          maxLength="500"
                           required
                         />
                       </div>
