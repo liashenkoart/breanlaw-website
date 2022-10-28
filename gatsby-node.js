@@ -13,4 +13,10 @@ exports.createPages = async ({ actions }) => {
     statusCode: 200,
   })
 
+  createRedirect({
+    fromPath: `/static/*`,
+    toPath: `https://tmepmain.gtsb.io/static/*`,
+    statusCode: 200,
+  })
+
 }
